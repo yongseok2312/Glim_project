@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+int solution(int a, int b) {
+    int answer = 0;
+   
+    int buse = 1;
+    while (buse <= b)
+        buse *= 10;
+    int ause = 1;
+    while (ause <=a)
+        ause *= 10;
+    
+    int ab = a*buse + b;
+    int ba = b*ause + a;
+    if(ab>=ba){
+        answer = ab;
+    }
+    else{
+        answer = ba;
+    }
+    return answer;
+}

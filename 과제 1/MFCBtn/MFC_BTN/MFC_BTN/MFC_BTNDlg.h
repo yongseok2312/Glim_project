@@ -1,20 +1,20 @@
 ﻿
-// MFCStartDlg.h: 헤더 파일
+// MFC_BTNDlg.h: 헤더 파일
 //
 
 #pragma once
 
 
-// CMFCStartDlg 대화 상자
-class CMFCStartDlg : public CDialogEx
+// CMFCBTNDlg 대화 상자
+class CMFCBTNDlg : public CDialogEx
 {
 // 생성입니다.
 public:
-	CMFCStartDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
+	CMFCBTNDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCSTART_DIALOG };
+	enum { IDD = IDD_MFC_BTN_DIALOG };
 #endif
 
 	protected:
@@ -31,10 +31,4 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedBtnTest();
-	int Ed_nNum;
-	afx_msg void OnEnChangeEditNum();
-	int Ed_nNum2;
-	int Result;
 };

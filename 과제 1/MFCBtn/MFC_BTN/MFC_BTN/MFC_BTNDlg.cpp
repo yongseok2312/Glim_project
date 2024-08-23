@@ -1,16 +1,15 @@
 ﻿
-// MFCStartDlg.cpp: 구현 파일
+// MFC_BTNDlg.cpp: 구현 파일
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCStart.h"
-#include "MFCStartDlg.h"
+#include "MFC_BTN.h"
+#include "MFC_BTNDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console") // 콘솔창 열기
 #endif
 
 
@@ -47,39 +46,31 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CMFCStartDlg 대화 상자
+// CMFCBTNDlg 대화 상자
 
 
 
-CMFCStartDlg::CMFCStartDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCSTART_DIALOG, pParent)
-	, Ed_nNum(100)
-	, Ed_nNum2(0)
-	, Result(0)
+CMFCBTNDlg::CMFCBTNDlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_MFC_BTN_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CMFCStartDlg::DoDataExchange(CDataExchange* pDX)
+void CMFCBTNDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_NUM, Ed_nNum);
-	DDX_Text(pDX, IDC_EDIT_NUM2, Ed_nNum2);
-	DDX_Text(pDX, IDC_STATIC_Result, Result);
 }
 
-BEGIN_MESSAGE_MAP(CMFCStartDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCBTNDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BTN_TEST, &CMFCStartDlg::OnBnClickedBtnTest)
-	ON_EN_CHANGE(IDC_EDIT_NUM, &CMFCStartDlg::OnEnChangeEditNum)
 END_MESSAGE_MAP()
 
 
-// CMFCStartDlg 메시지 처리기
+// CMFCBTNDlg 메시지 처리기
 
-BOOL CMFCStartDlg::OnInitDialog()
+BOOL CMFCBTNDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -109,12 +100,11 @@ BOOL CMFCStartDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	SetDlgItemText(IDC_STATIC_Result, _T("0"));
-	SetDlgItemText(IDC_EDIT_NUM, _T("0"));
+
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
-void CMFCStartDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CMFCBTNDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -131,7 +121,7 @@ void CMFCStartDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  아래 코드가 필요합니다.  문서/뷰 모델을 사용하는 MFC 애플리케이션의 경우에는
 //  프레임워크에서 이 작업을 자동으로 수행합니다.
 
-void CMFCStartDlg::OnPaint()
+void CMFCBTNDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -158,29 +148,8 @@ void CMFCStartDlg::OnPaint()
 
 // 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
 //  이 함수를 호출합니다.
-HCURSOR CMFCStartDlg::OnQueryDragIcon()
+HCURSOR CMFCBTNDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-#include <iostream>
-using namespace std;
-void CMFCStartDlg::OnBnClickedBtnTest()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	UpdateData(true);
-	Result = Ed_nNum + Ed_nNum2;
-	UpdateData(false); 
-}
-
-
-void CMFCStartDlg::OnEnChangeEditNum()
-{
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}

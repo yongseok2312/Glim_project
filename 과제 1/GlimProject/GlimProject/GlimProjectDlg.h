@@ -2,6 +2,8 @@
 // glimProjectDlg.h: 헤더 파일
 //
 #include "DRAWCIRCLE.h"
+#include "Imgloading.h"
+
 
 #pragma once
 
@@ -15,6 +17,7 @@ public:
 
 	DRAWCIRCLE* m_pDlgImage;
 	DRAWCIRCLE* m_pDlgImgReuslt;
+	DRAWCIRCLE* m_pDlgImage2;
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME

@@ -37,6 +37,8 @@ public:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedBtnLoad();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -49,6 +51,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_BN_CLICKED(IDC_BTN_LOAD, &CAboutDlg::OnBnClickedBtnLoad)
 END_MESSAGE_MAP()
 
 
@@ -189,6 +192,7 @@ void CglimProjectDlg::OnDestroy()
 
 	if (m_pDlgImage)		delete m_pDlgImage;
 	if (m_pDlgImgReuslt)	delete m_pDlgImgReuslt;
+	if (m_pDlgImage2)	delete m_pDlgImage2;
 }
 
 
@@ -217,3 +221,4 @@ void CglimProjectDlg::OnBnClickedBtnTest()
 	}
 	m_pDlgImage->Invalidate();
 }
+

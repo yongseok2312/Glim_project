@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++에서 생성한 포함 파일입니다.
-// GrimProject.rc에서 사용되고 있습니다.
+// GlimProject.rc에서 사용되고 있습니다.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -11,8 +11,9 @@
 #define IDI_ICON2                       130
 #define IDD_DRAW                        133
 #define IDD_DIALOG1                     136
-#define IDD_LOAD                        136
 #define IDC_BTN_TEST                    1001
+#define IDC_BTN_TEST2                   1002
+#define IDC_BTN_LOAD                    1002
 
 // Next default values for new objects
 // 
@@ -21,6 +22,6 @@
 #define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1002
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

@@ -22,8 +22,9 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{BD47CFF5-BE46-4BD2-8374-EF604A706EE6}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>GrimProject</RootNamespace>
+    <RootNamespace>GlimProject</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GlimProject</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+// arr_len은 배열 arr의 길이입니다.
+// query_len은 배열 query의 길이입니다.
+int* solution(int arr[], size_t arr_len, int query[], size_t query_len) {
+  int start = 0, end = arr_len - 1;  // 시작인덱스 0, 마지막인덱스 배열 마지막인덱스
+  for (int i = 0; i < query_len; i++) {
+    if (i % 2 == 0) { // 짝수 인덱스이면 query[i] 번 인덱스 제외 뒷부분을 자름
+      end = start + query[i]; 
+    }
+    else { // 홀수 인덱스이면 query[i]번 인덱스 제외 앞부분 자름
+      start = start + query[i];
+    }
+  }
+  int* answer = (int*)malloc(sizeof(int) * (end - start + 2));
+  answer[end - start + 1] = '\0';  // 배열 마지막추가
+
+  int index = 0;
+  for (int i = start; i <= end; i++) {
+    answer[index] = arr[i];
+    index++;
+  }
+  answer[index] = '\0';
+
+
+  return answer;
+}

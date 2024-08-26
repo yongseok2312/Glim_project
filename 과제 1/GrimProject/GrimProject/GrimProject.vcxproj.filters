@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GrimProject.h">
+    <ClInclude Include="GlimProject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GrimProjectDlg.h">
+    <ClInclude Include="GlimProjectDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -38,10 +38,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GrimProject.cpp">
+    <ClCompile Include="GlimProject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GrimProjectDlg.cpp">
+    <ClCompile Include="GlimProjectDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -52,17 +52,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GrimProject.rc">
+    <ResourceCompile Include="GlimProject.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\GrimProject.rc2">
+    <None Include="res\GlimProject.rc2">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\GrimProject.ico">
+    <Image Include="res\GlimProject.ico">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\20220315_logo_Glim.ico">

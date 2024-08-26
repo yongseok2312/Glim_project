@@ -1,11 +1,11 @@
 ﻿
-// GrimProjectDlg.cpp: 구현 파일
+// glimProjectDlg.cpp: 구현 파일
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "GrimProject.h"
-#include "GrimProjectDlg.h"
+#include "glimProject.h"
+#include "glimProjectDlg.h"
 #include "afxdialogex.h"
 #include <iostream>
 using namespace std;
@@ -52,32 +52,32 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CGrimProjectDlg 대화 상자
+// CglimProjectDlg 대화 상자
 
 
 
-CGrimProjectDlg::CGrimProjectDlg(CWnd* pParent /*=nullptr*/)
+CglimProjectDlg::CglimProjectDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GRIMPROJECT_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON2);
 }
 
-void CGrimProjectDlg::DoDataExchange(CDataExchange* pDX)
+void CglimProjectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CGrimProjectDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CglimProjectDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BTN_TEST, &CGrimProjectDlg::OnBnClickedBtnTest)
+	ON_BN_CLICKED(IDC_BTN_TEST, &CglimProjectDlg::OnBnClickedBtnTest)
 END_MESSAGE_MAP()
 
 
-// CGrimProjectDlg 메시지 처리기
+// CglimProjectDlg 메시지 처리기
 
-BOOL CGrimProjectDlg::OnInitDialog()
+BOOL CglimProjectDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -134,7 +134,7 @@ BOOL CGrimProjectDlg::OnInitDialog()
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
-void CGrimProjectDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CglimProjectDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
@@ -151,7 +151,7 @@ void CGrimProjectDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  아래 코드가 필요합니다.  문서/뷰 모델을 사용하는 MFC 애플리케이션의 경우에는
 //  프레임워크에서 이 작업을 자동으로 수행합니다.
 
-void CGrimProjectDlg::OnPaint()
+void CglimProjectDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -178,12 +178,12 @@ void CGrimProjectDlg::OnPaint()
 
 // 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
 //  이 함수를 호출합니다.
-HCURSOR CGrimProjectDlg::OnQueryDragIcon()
+HCURSOR CglimProjectDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CGrimProjectDlg::OnDestroy()
+void CglimProjectDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
@@ -192,7 +192,7 @@ void CGrimProjectDlg::OnDestroy()
 }
 
 
-void CGrimProjectDlg::OnBnClickedBtnTest()
+void CglimProjectDlg::OnBnClickedBtnTest()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 

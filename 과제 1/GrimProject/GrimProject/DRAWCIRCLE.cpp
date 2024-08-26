@@ -2,10 +2,10 @@
 //
 
 #include "pch.h"
-#include "GrimProject.h"
+#include "GlimProject.h"
 #include "afxdialogex.h"
 #include "DRAWCIRCLE.h"
-#include "GrimProjectDlg.h"
+#include "glimProjectDlg.h"
 
 
 // DRAWCIRCLE 대화 상자

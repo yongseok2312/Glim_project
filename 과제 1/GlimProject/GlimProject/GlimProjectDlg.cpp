@@ -16,10 +16,6 @@ using namespace std;
 #define new DEBUG_NEW
 #endif
 
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-
-
-// 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
 
 class CAboutDlg : public CDialogEx
 {
@@ -38,7 +34,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedBtnLoad();
+	afx_msg void OnBnClickedBtnLoad1();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -50,8 +46,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
+
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-	ON_BN_CLICKED(IDC_BTN_LOAD, &CAboutDlg::OnBnClickedBtnLoad)
 END_MESSAGE_MAP()
 
 
@@ -75,6 +71,10 @@ BEGIN_MESSAGE_MAP(CglimProjectDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BTN_TEST, &CglimProjectDlg::OnBnClickedBtnTest)
+	ON_BN_CLICKED(IDC_BTN_LOAD3, &CglimProjectDlg::OnBnClickedBtnLoad3)
+	ON_BN_CLICKED(IDC_BTM_RESET, &CglimProjectDlg::OnBnClickedBtmReset)
+	ON_BN_CLICKED(IDC_BTN_LOAD4, &CglimProjectDlg::OnBnClickedBtnsave)
+	ON_BN_CLICKED(IDC_BTN_TEST3, &CglimProjectDlg::OnBnClickedBtnAction)
 END_MESSAGE_MAP()
 
 
@@ -84,7 +84,9 @@ BOOL CglimProjectDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+
 	// 시스템 메뉴에 "정보..." 메뉴 항목을 추가합니다.
+	m_staticCenter.SubclassDlgItem(IDC_STATIC_CENTER, this);
 
 	// IDM_ABOUTBOX는 시스템 명령 범위에 있어야 합니다.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
@@ -113,24 +115,18 @@ BOOL CglimProjectDlg::OnInitDialog()
 	GetClientRect(&clientRect);
 
 	// 대화 상자 크기와 위치 설정
-	int parentDlgWidth = 640;
-	int parentDlgHeight = 480;
+	int parentDlgWidth = 680;
+	int parentDlgHeight = 600;
 	MoveWindow(0, 0, parentDlgWidth, parentDlgHeight);
 
-	// DRAWCIRCLE 대화 상자의 크기
-	int childDlgWidth = 640;  // 예: 대화 상자의 너비를 400으로 설정
-	int childDlgHeight = 430; // 예: 대화 상자의 높이를 300으로 설정
-
-	// 상단에서 100픽셀 떨어진 위치에 대화 상자를 배치하기 위해 y 좌표 계산
 	int x = 0;
-	int y = 50; // 상단에서 100픽셀 떨어진 위치
+	int y = 50; 
 
 	// DRAWCIRCLE 대화 상자를 생성하고 표시합니다.
 	m_pDlgImage = new DRAWCIRCLE;
 	m_pDlgImage->Create(IDD_DRAW, this);
 
-	// 클라이언트 영역 내에서 상단에서 100픽셀 떨어진 위치로 대화 상자를 배치합니다.
-	m_pDlgImage->MoveWindow(x, y, childDlgWidth, childDlgHeight);
+	m_pDlgImage->MoveWindow(x, y, 680, 600);
 	m_pDlgImage->ShowWindow(SW_SHOW);
 
 
@@ -192,33 +188,216 @@ void CglimProjectDlg::OnDestroy()
 
 	if (m_pDlgImage)		delete m_pDlgImage;
 	if (m_pDlgImgReuslt)	delete m_pDlgImgReuslt;
-	if (m_pDlgImage2)	delete m_pDlgImage2;
 }
-
+CString g_strFileImage;
 
 void CglimProjectDlg::OnBnClickedBtnTest()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int txtnum = GetDlgItemInt(IDC_BTN_NUM);
 
+	// 이미지의 포인터 가져오기
 	unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
+
 	int nWidth = m_pDlgImage->m_Image.GetWidth();
 	int nHeight = m_pDlgImage->m_Image.GetHeight();
 	int nPitch = m_pDlgImage->m_Image.GetPitch();
 
-	for (int k = 0; k < 100; k++) {
-		int x = rand() % nWidth;
-		int y = rand() % nHeight;
-		fm[y * nPitch + x] = 0;
+	srand((unsigned)time(NULL));
+
+	
+	for (int j = 0; j < txtnum; j++) {
+		int nRadius = rand()%100;
+
+		memset(fm, 0xff, nWidth * nHeight); // 0xff로 초기화
+
+		// 랜덤 원 그리기
+		int nMaxX = nWidth - 2 * nRadius;
+		int nMaxY = nHeight - 2 * nRadius;
+
+		// 원이 화면을 벗어나지 않도록 좌표를 조정합니다.
+		int nSttX = rand() % (nMaxX + 1);
+		int nSttY = rand() % (nMaxY + 1);
+
+		drawCircle(fm, nSttX, nSttY, nRadius, 0); // 0xff는 흰색으로 설정
+
+		g_strFileImage.Format(_T("C:\\Sources\\Glim_project\\과제 1\\GlimProject\\image%d.bmp"), j);
+		m_pDlgImage->m_Image.Save(g_strFileImage);
+
+		m_pDlgImage->Invalidate(); // 이미지 컨트롤을 새로 고침
+		m_pDlgImage->UpdateWindow(); // 즉시 화면 업데이트
+
+		Sleep(500); // 0.5초 대기
 	}
-	int nSum = 0;
-	for (int j = 0; j < nHeight; j++) {
-		for (int i = 0; i < nWidth; i++) {
-			if (fm[j * nPitch + i] == 0) {
-				cout << nSum << ":" << i << "," << j << endl;
-				nSum++;
+}
+
+void CglimProjectDlg::drawCircle(unsigned char* fm, int x, int y, int nRadius, int nGray) {
+	int nCenterX = x + nRadius;
+	int nCenterY = y + nRadius;
+	int nWidth = m_pDlgImage->m_Image.GetWidth();
+	int nHeight = m_pDlgImage->m_Image.GetHeight();
+	int nPitch = m_pDlgImage->m_Image.GetPitch();
+
+
+	for (int j = y; j < y + nRadius * 2; j++) {
+		for (int i = x; i < x + nRadius * 2; i++) {
+			if (isInCircle(i, j, nCenterX, nCenterY, nRadius)) {
+				if (i >= 0 && i < nWidth && j >= 0 && j < nHeight) { // 이미지 범위 검사
+					fm[j * nPitch + i] = nGray;
+				}
 			}
 		}
 	}
-	m_pDlgImage->Invalidate();
 }
 
+bool CglimProjectDlg::isInCircle(int i, int j, int nCenterX, int nCenterY, int nRadius) {
+	double dX = i - nCenterX;
+	double dY = j - nCenterY;
+	double dDist = dX * dX + dY * dY;
+
+	return dDist <= nRadius * nRadius;
+}
+
+
+void CglimProjectDlg::OnBnClickedBtnLoad3()
+{
+	CFileDialog dlg(TRUE, _T("bmp"), NULL, OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST, _T("Bitmap Files (*.bmp)|*.bmp||"));
+	if (dlg.DoModal() == IDOK)
+	{
+		g_strFileImage = dlg.GetPathName();
+
+		if (!m_pDlgImage->m_Image.IsNull())
+		{
+			m_pDlgImage->m_Image.Destroy();
+		}
+
+		HRESULT hr = m_pDlgImage->m_Image.Load(g_strFileImage);
+		if (FAILED(hr))
+		{
+			CString errorMsg;
+			return;
+		}
+
+		m_pDlgImage->UpdateDisplay();
+
+		unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
+		int nWidth = m_pDlgImage->m_Image.GetWidth();
+		int nHeight = m_pDlgImage->m_Image.GetHeight();
+		int nPitch = m_pDlgImage->m_Image.GetPitch();
+
+		 int nTh = 0x80; 
+
+        int nSumX = 0;
+        int nSumY = 0;
+        int nCount = 0;
+
+        for (int j = 0; j < nHeight; j++) {
+            for (int i = 0; i < nWidth; i++) {
+                if (fm[j * nPitch + i] > nTh) {
+                    nSumX += i;
+                    nSumY += j; 
+                    nCount++;
+                }
+            }
+        }
+
+        // 중심 좌표 계산
+        double dCenterX = 0.0;
+        double dCenterY = 0.0;
+
+        if (nCount > 0) {
+            dCenterX = (double)nSumX / nCount;
+            dCenterY = (double)nSumY / nCount;
+        }
+
+		CString strCenter;
+		strCenter.Format(_T("(%.2f, %.2f)"), dCenterX, dCenterY);
+		
+		SetDlgItemText(IDC_STATIC_CENTER, strCenter);
+	}
+}
+
+
+void CglimProjectDlg::OnBnClickedBtmReset()
+{
+	int nWidth = m_pDlgImage->m_Image.GetWidth();
+	int nHeight = m_pDlgImage->m_Image.GetHeight();
+	unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
+
+	for (int y = 0; y < nHeight; y++)
+	{
+		for (int x = 0; x < nWidth; x++)
+		{
+			fm[y * m_pDlgImage->m_Image.GetPitch() + x] = 0xFF;
+		}
+	}
+
+	m_pDlgImage->Invalidate(); 
+	m_pDlgImage->UpdateWindow(); 
+}
+
+
+void CglimProjectDlg::OnBnClickedBtnsave()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	g_strFileImage.Format(_T("C:\\Sources\\Glim_project\\과제 1\\GlimProject\\circle_center.bmp"));
+	m_pDlgImage->m_Image.Save(g_strFileImage);
+}
+
+
+void CglimProjectDlg::OnBnClickedBtnAction()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_StartPoint = CPoint(100, 100); // 예시 값 (x1, y1)
+	m_EndPoint = CPoint(500, 400);   // 예시 값 (x2, y2)
+	m_PixelInterval = 10;            // 이동 간격 (픽셀 단위)
+	m_CircleRadius = 30;             // 원의 반지름
+
+	CRect clientRect;
+	GetClientRect(&clientRect);
+	CString folderPath = _T("C:\\Sources\\Glim_project\\과제 1\\GlimProject\\");
+	int imageIndex = 0;
+
+	// 이동 범위 설정
+	int x1 = m_StartPoint.x;
+	int y1 = m_StartPoint.y;
+	int x2 = m_EndPoint.x;
+	int y2 = m_EndPoint.y;
+
+	// 이동 방향 계산
+	int dx = x2 - x1;
+	int dy = y2 - y1;
+	int steps = max(abs(dx), abs(dy));
+	float xStep = (float)dx / steps;
+	float yStep = (float)dy / steps;
+
+	for (int i = 0; i <= steps; i++)
+	{
+		// 원의 현재 위치 계산
+		int currentX = x1 + (int)(i * xStep);
+		int currentY = y1 + (int)(i * yStep);
+
+		// 이미지 초기화
+		unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
+		int nWidth = m_pDlgImage->m_Image.GetWidth();
+		int nHeight = m_pDlgImage->m_Image.GetHeight();
+		memset(fm, 0xff, nWidth * nHeight); // 흰색으로 초기화
+
+		// 원 그리기
+		drawCircle(fm, currentX - m_CircleRadius, currentY - m_CircleRadius, m_CircleRadius, 0);
+
+		// 이미지 파일 저장
+		CString filePath;
+		filePath.Format(_T("%simage_%03d.bmp"), folderPath, imageIndex++);
+		SaveImage(filePath);
+
+		m_pDlgImage->Invalidate();
+		m_pDlgImage->UpdateWindow();
+
+		Sleep(500); // 0.5초 대기
+	}
+}
+
+void CglimProjectDlg::SaveImage(const CString& filePath)
+{
+    m_pDlgImage->m_Image.Save(filePath);
+}

@@ -37,4 +37,5 @@ public:
 	afx_msg void OnEnChangeEditNum();
 	int Ed_nNum2;
 	int Result;
+	afx_msg void OnEnChangeEditNum2();
 };

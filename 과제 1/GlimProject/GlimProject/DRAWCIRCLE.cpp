@@ -40,7 +40,7 @@ BOOL DRAWCIRCLE::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	MoveWindow(0, 0, 640, 480);
+	MoveWindow(0, 0, 680, 550);
 
 
 	InitImage();
@@ -50,8 +50,8 @@ BOOL DRAWCIRCLE::OnInitDialog()
 }
 
 void DRAWCIRCLE::InitImage() {
-	int nWidth = 640;
-	int nHeight = 460;
+	int nWidth = 660;
+	int nHeight = 505;
 	int nBpp = 8;
 
 	m_Image.Create(nWidth, -nHeight, nBpp);
@@ -69,19 +69,6 @@ void DRAWCIRCLE::InitImage() {
 	memset(fm, 0xff, nWidth * nHeight);
 }
 
-void DRAWCIRCLE::drawData(CDC* pDC) {
-	CRect rect;
-	CPen  pen;
-	pen.CreatePen(PS_SOLID, 3, RGB(0xff, 0, 0));  // 색상 변경 (팬, 두께 , 색상)
-	CPen* pOldPen = pDC->SelectObject(&pen); // 현재 펜 저장
-	for (int i = 0; i < m_nDataCount; i++) {
-		rect.SetRect(m_ptData[i], m_ptData[i]);
-		rect.InflateRect(2, 2);
-		pDC->Ellipse(rect);
-	}
-
-	pDC->SelectObject(pOldPen); // 마무리 할 때 펜 저장
-}
 
 void DRAWCIRCLE::OnPaint()
 {
@@ -91,6 +78,9 @@ void DRAWCIRCLE::OnPaint()
 		m_Image.Draw(dc, 0, 0);
 	}
 
-	drawData(&dc);
-	// 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+}
+
+void DRAWCIRCLE::UpdateDisplay() {
+	CClientDC dc(this);
+	m_Image.Draw(dc, 0, 0);
 }

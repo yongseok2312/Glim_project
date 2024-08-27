@@ -27,8 +27,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	void UpdateDisplay();
 	virtual BOOL OnInitDialog();
 	void InitImage();
-	void drawData(CDC* pDC);
 	afx_msg void OnPaint();
 };

@@ -52,5 +52,7 @@ public:
 	afx_msg void OnBnClickedBtmReset();
 	afx_msg void OnBnClickedBtnsave();
 	afx_msg void OnBnClickedBtnAction();
-	void SaveImage(const CString& filePath);
+	void moverect();
+	BOOL validImagPos(int x, int y);
+	void drawLine(unsigned char* fm, int x1, int y1, int x2, int y2, int color);
 };

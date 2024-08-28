@@ -22,6 +22,8 @@
 #define IDC_BTN_NUM                     1005
 #define IDC_BTN_TEST3                   1006
 #define IDC_STATIC_CENTER               1010
+#define IDC_STATIC_RADIUS 1011 // 적절한 값으로 수정
+
 
 // Next default values for new objects
 // 

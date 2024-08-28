@@ -284,38 +284,78 @@ void CglimProjectDlg::OnBnClickedBtnLoad3()
 		int nHeight = m_pDlgImage->m_Image.GetHeight();
 		int nPitch = m_pDlgImage->m_Image.GetPitch();
 
-		 int nTh = 0x80; 
+		int nTh = 0x01; 
 
-        int nSumX = 0;
-        int nSumY = 0;
-        int nCount = 0;
+		int nSumX = 0;
+		int nSumY = 0;
+		int nCount = 0;
 
-        for (int j = 0; j < nHeight; j++) {
-            for (int i = 0; i < nWidth; i++) {
-                if (fm[j * nPitch + i] > nTh) {
-                    nSumX += i;
-                    nSumY += j; 
-                    nCount++;
-                }
-            }
-        }
+		double dMaxRadius = 0.0;
+		double dCenterX = 0.0;
+		double dCenterY = 0.0;
 
-        // 중심 좌표 계산
-        double dCenterX = 0.0;
-        double dCenterY = 0.0;
+		for (int j = 0; j < nHeight; j++) {
+			for (int i = 0; i < nWidth; i++) {
+				if (fm[j * nPitch + i] == 0x00) { 
+					nSumX += i;
+					nSumY += j;
+					nCount++;
+				}
+			}
+		}
 
-        if (nCount > 0) {
-            dCenterX = (double)nSumX / nCount;
-            dCenterY = (double)nSumY / nCount;
-        }
+		// 중심 좌표 계산
+		if (nCount > 0) {
+			dCenterX = (double)nSumX / nCount;
+			dCenterY = (double)nSumY / nCount;
+		}
+
+		// 중심으로부터의 최대 거리 계산
+		for (int j = 0; j < nHeight; j++) {
+			for (int i = 0; i < nWidth; i++) {
+				if (fm[j * nPitch + i] == 0x00) { 
+					double dDist = sqrt((i - dCenterX) * (i - dCenterX) + (j - dCenterY) * (j - dCenterY));
+					if (dDist > dMaxRadius) {
+						dMaxRadius = dDist;
+					}
+				}
+			}
+		}
 
 		CString strCenter;
-		strCenter.Format(_T("(%.2f, %.2f)"), dCenterX, dCenterY);
-		
+		strCenter.Format(_T("(%.2f, %.2f), %.2f"), dCenterX, dCenterY, dMaxRadius/2);
+
 		SetDlgItemText(IDC_STATIC_CENTER, strCenter);
+
+		int edgeX = static_cast<int>(dCenterX + dMaxRadius);
+		int edgeY = static_cast<int>(dCenterY);
+		drawLine(fm, static_cast<int>(dCenterX), static_cast<int>(dCenterY), edgeX, edgeY, 0xFF);
+
+		m_pDlgImage->Invalidate();
+		m_pDlgImage->UpdateWindow();
 	}
 }
 
+
+void CglimProjectDlg::drawLine(unsigned char* fm, int x1, int y1, int x2, int y2, int color)
+{
+	int dx = abs(x2 - x1);
+	int dy = abs(y2 - y1);
+	int sx = (x1 < x2) ? 1 : -1;
+	int sy = (y1 < y2) ? 1 : -1;
+	int err = dx - dy;
+
+	while (true) {
+		if (validImagPos(x1, y1)) {
+			fm[y1 * m_pDlgImage->m_Image.GetPitch() + x1] = color;
+		}
+
+		if (x1 == x2 && y1 == y2) break;
+		int e2 = err * 2;
+		if (e2 > -dy) { err -= dy; x1 += sx; }
+		if (e2 < dx) { err += dx; y1 += sy; }
+	}
+}
 
 void CglimProjectDlg::OnBnClickedBtmReset()
 {
@@ -346,58 +386,42 @@ void CglimProjectDlg::OnBnClickedBtnsave()
 
 void CglimProjectDlg::OnBnClickedBtnAction()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_StartPoint = CPoint(100, 100); // 예시 값 (x1, y1)
-	m_EndPoint = CPoint(500, 400);   // 예시 값 (x2, y2)
-	m_PixelInterval = 10;            // 이동 간격 (픽셀 단위)
-	m_CircleRadius = 30;             // 원의 반지름
+	
+	moverect();
 
-	CRect clientRect;
-	GetClientRect(&clientRect);
-	CString folderPath = _T("C:\\Sources\\Glim_project\\과제 1\\GlimProject\\");
-	int imageIndex = 0;
-
-	// 이동 범위 설정
-	int x1 = m_StartPoint.x;
-	int y1 = m_StartPoint.y;
-	int x2 = m_EndPoint.x;
-	int y2 = m_EndPoint.y;
-
-	// 이동 방향 계산
-	int dx = x2 - x1;
-	int dy = y2 - y1;
-	int steps = max(abs(dx), abs(dy));
-	float xStep = (float)dx / steps;
-	float yStep = (float)dy / steps;
-
-	for (int i = 0; i <= steps; i++)
-	{
-		// 원의 현재 위치 계산
-		int currentX = x1 + (int)(i * xStep);
-		int currentY = y1 + (int)(i * yStep);
-
-		// 이미지 초기화
-		unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
-		int nWidth = m_pDlgImage->m_Image.GetWidth();
-		int nHeight = m_pDlgImage->m_Image.GetHeight();
-		memset(fm, 0xff, nWidth * nHeight); // 흰색으로 초기화
-
-		// 원 그리기
-		drawCircle(fm, currentX - m_CircleRadius, currentY - m_CircleRadius, m_CircleRadius, 0);
-
-		// 이미지 파일 저장
-		CString filePath;
-		filePath.Format(_T("%simage_%03d.bmp"), folderPath, imageIndex++);
-		SaveImage(filePath);
-
-		m_pDlgImage->Invalidate();
-		m_pDlgImage->UpdateWindow();
-
-		Sleep(500); // 0.5초 대기
-	}
+	g_strFileImage.Format(_T("C:\\Sources\\Glim_project\\과제 1\\GlimProject\\circle_action.bmp"));
+	m_pDlgImage->m_Image.Save(g_strFileImage);
 }
 
-void CglimProjectDlg::SaveImage(const CString& filePath)
+void CglimProjectDlg::moverect()
 {
-    m_pDlgImage->m_Image.Save(filePath);
+	static int nSttX = 0;
+	static int nSttY = 0;
+	int nGray = 80;
+	int nWidth = m_pDlgImage->m_Image.GetWidth();
+	int nHeight = m_pDlgImage->m_Image.GetHeight();
+	int nPitch = m_pDlgImage->m_Image.GetPitch();
+	int nRadius = 20;
+
+	unsigned char* fm = (unsigned char*)m_pDlgImage->m_Image.GetBits();
+
+
+	drawCircle(fm, nSttX, nSttY, nRadius, 0xff);
+
+	drawCircle(fm, ++nSttX, ++nSttY, nRadius, nGray);
+
+
+
+	m_pDlgImage->Invalidate();
+	m_pDlgImage->UpdateWindow();
 }
+
+BOOL CglimProjectDlg::validImagPos(int x, int y) {
+	int nWidth = m_pDlgImage->m_Image.GetWidth();
+	int nHeight = m_pDlgImage->m_Image.GetHeight();
+
+	CRect rect(0, 0, nWidth, nHeight); // 영역 생성
+
+	return rect.PtInRect(CPoint(x, y));	// 포인트 안에 들어가면 True 안들어가면 False
+}
+
